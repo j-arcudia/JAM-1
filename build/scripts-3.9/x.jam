@@ -1,0 +1,107 @@
+#!python
+from jam.jamlib import *
+import numpy as np
+from itertools import permutations, product
+#-------------------------------------
+long_string = """#"option:"
+#"1. Homonuclear plano (tipo grafeno)"
+#"2. Heteronuclear plano (tipo h-BN)");
+#"3. Homonuclear con buckling (tipo fosforeno)"
+#"4. Heteronuclear con buckling (tipo AsP)"
+#"5. Heterocapa (grafeno+h-BN)"
+#"6. Heterocapa (fosforeno+AsP)"
+
+option       4
+num_layers   2
+atom_list    As P
+latticep     3.44
+z_vacuum     20.0
+buckling     0.0
+distance     3.6"""
+#-------------------------------------
+if not os.path.isfile('JAM.inp'):
+    print('The JAM.inp file was not found.')
+    print('An example input file has been created.')
+    print('Please:\n (1) Edit the JAM.inp file.\n (2) re-run x.jam')
+    exfile = open('JAM.inp', "w")
+    exfile.write(long_string)
+    exfile.close()
+    exit()
+#-------------------------------------
+option=get_a_int('option')
+if option not in [1,2,3,4,5,6]:
+    print('\'option\' is not a valid number')
+    exit()
+num_layers=get_a_int('num_layers')
+if num_layers <= 0:
+    print('\'num_layers\' is not a valid number')
+    exit()
+atom_list=get_str_list('atom_list')
+latticep=get_a_float('latticep')
+if latticep <= 0.0:
+    print('\'latticep\' is not a valid number')
+    exit()
+z_vacuum=get_a_float('z_vacuum')
+if z_vacuum <= 0.0:
+    print('\'z_vacuum\' is not a valid number')
+    exit()
+buckling=get_a_float('buckling')
+if buckling < 0.0:
+    print('\'buckling\' is not a valid number')
+    exit()
+d=get_a_float('distance')
+if d <= 0.0:
+    print('\'distance\' is not a valid number')
+    exit()
+#-------------------------------------
+opt1 = ['+0','+j','+j']
+opt2 = ['+0','+j','+k']
+opt3 = ['+0','+j','-j']
+opt4a= ['+0','+j','-k']
+opt4b= ['+0','-j','+k']
+if option ==  1:
+    filasDefinidas = list(set(permutations(opt1, 3)))
+if option ==  2:
+    filasDefinidas = list(set(permutations(opt2, 3)))
+if option ==  3:
+    filasDefinidas = list(set(permutations(opt3, 3)))
+if option ==  4:
+    filasDefinidas = list(set(permutations(opt4a, 3)))+list(set(permutations(opt4b, 3)))
+if option ==  5:
+    filasDefinidas = list(set(permutations(opt1, 3)))+list(set(permutations(opt2, 3)))
+if option ==  6:
+    filasDefinidas4 = list(set(permutations(opt4a, 3)))+list(set(permutations(opt4b, 3)))
+    filasDefinidas = list(set(permutations(opt3, 3)))+filasDefinidas4
+#-------------------------------------
+apilamiento = list(product(filasDefinidas, repeat=num_layers))
+nap=len(apilamiento)
+repetidos,norepetidos=[],[0]
+for i in range(1,nap):
+    a=np.array(apilamiento[i])
+    ic=True
+    for j in norepetidos:
+        b=np.array(apilamiento[j])
+        ans=ask_equivalents(a,b,option)
+        if ans:
+            repetidos.append(i)
+            #print('%s) %s del by sim to %s' %(str(len(repetidos)).zfill(3),cadenax(b),cadenax(a)))
+            ic=False
+            break
+    if ic: norepetidos.append(i)
+
+#-------------------------------------
+fopen = open('jamstrings.txt','w')
+gopen = open('sjamstrings.txt','w')
+for i,ix in enumerate(norepetidos):
+    ai=np.array(apilamiento[ix])
+    ichain=cadenax(ai)
+    file0='POSCAR'+str(i+1).zfill(4)+'.vasp'
+    ichbin=ichain.replace("j", atom_list[0])
+    ichbin=ichbin.replace("k", atom_list[1])
+    build_poscarx(ai,ichbin,file0,z_vacuum,num_layers,d,latticep,atom_list,buckling)
+    print(str(i+1).zfill(3)+')', ichain)
+    print(ichain,file=fopen)
+    print(ichbin,file=gopen)
+fopen.close()
+gopen.close()
+exit()

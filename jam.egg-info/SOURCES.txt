@@ -1,0 +1,10 @@
+README.md
+setup.py
+x.jam
+jam/__init__.py
+jam/jamlib.py
+jam.egg-info/PKG-INFO
+jam.egg-info/SOURCES.txt
+jam.egg-info/dependency_links.txt
+jam.egg-info/requires.txt
+jam.egg-info/top_level.txt

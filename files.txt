@@ -1,0 +1,5 @@
+/usr/local/lib/python3.9/site-packages/jam-0.1-py3.9.egg
+/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin/x.jam
+/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin/f2py
+/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin/f2py3
+/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/bin/f2py3.9

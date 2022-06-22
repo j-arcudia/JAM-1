@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: jam
+Version: 0.1
+Summary: Generate stacking layers via the Joining and Arrangement of Multilayers (JAM) notation
+Home-page: https://github.com/fortiz/jam
+Author: THEOCHEM Merida
+Author-email: fortiz666@gmail.com
+License: GPLv3
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+
+Identifies and generates stacking sequences of high-symmetric honeycomb lattice layered materials via the Joining and Arrangement of Multilayers (JAM) notation by mapping a string of characters to the structure of a polytype using only its chemical symbols.
+
+You can install and uninstall with:
+
+```
+# install
+pip3 install jam
+# uninstall
+pip3 uninstall jam
+```
+
+or
+
+```
+# install
+python3 setup.py install --record files.txt
+# uninstall
+xargs rm -rf < files.txt
+```
