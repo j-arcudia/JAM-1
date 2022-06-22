@@ -1,6 +1,0 @@
-/usr/local/bin/python3 setup.py bdist_wheel
-cd dist && /usr/local/bin/python3 -m pip install jam-0.1-py3-none-any.whl
-cd dist && /usr/local/bin/python3 -m pip install jam-0.1-py3-none-any.whl --force-reinstall
-cd test && x.jam
-
-/usr/local/bin/python3 setup.py install --record files.txt
